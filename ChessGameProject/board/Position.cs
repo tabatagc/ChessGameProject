@@ -6,22 +6,22 @@ namespace ChessGameProject.board
 {
     class Position
     {
-        public int row { get; set; }
-        public int column { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
 
         public Position()
         {
         }
 
-        public Position(int _row, int _column)
+        public Position(int row, int column)
         {
-            row = _row;
-            column = _column;
+            Row = row;
+            Column = column;
         }
 
         public override string ToString()
         {
-            return row + ", " + column;
+            return Row + ", " + Column;
         }
     }
 }
