@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ChessGameProject.Chess;
 
 namespace ChessGameProject.board
 {
@@ -8,7 +9,7 @@ namespace ChessGameProject.board
     {
         public int Rows { get; set; }
         public int Columns { get; set; }
-        private Piece[,] Pieces;
+        private Piece[,] pieces;
 
         public Board ()
         {
@@ -18,18 +19,56 @@ namespace ChessGameProject.board
         {
             Rows = rows;
             Columns = columns;
-            Pieces = new Piece[rows, columns];
+            pieces = new Piece[rows, columns];
         }
 
+        //Returns the piece in position (row, column) 
         public Piece piece(int row, int column)
         {
-            return Pieces[row, column];
+            return pieces[row, column];
         }
 
+        // For instance the piece in matriz [x,y]
+        public Piece piece(Position position)
+        {
+            return pieces[position.Row, position.Column];
+        }
+
+        //If there is a piece in x posisiton -> but first, verify if position is valid
+        public bool ExistsPiece(Position position)
+        {
+            ValidPosition(position);
+            return piece(position) != null;
+        }
+
+        //Put one piece in x position 
         public void PutPiece (Piece piece, Position position)
         {
-            Pieces[position.Row, position.Column] = piece;
+            if(ExistsPiece(position))
+            {
+                throw new BoardException("There is already a piece in that position!");
+            }
+            pieces[position.Row, position.Column] = piece;
             piece.Position = position;
+        }
+
+        //Position Verification-> if is valid or not 
+        public bool ValidPosition(Position position)
+        {
+            if(position.Row<0 || position.Row>= Rows || position.Column<0 || position.Column >= Columns)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        //Exception for invalid position
+        public void ValidatePosition(Position position)
+        {
+            if (!ValidPosition(position))
+            {
+                throw new BoardException("Invalid position");
+            }
         }
     }
 }

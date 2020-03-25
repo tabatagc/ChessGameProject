@@ -6,7 +6,7 @@ namespace ChessGameProject.board.Enum
 {
     enum Color: int
     {
-        Branca =0,
-        Preta =1
+        White =0,
+        Black =1
     }
 }

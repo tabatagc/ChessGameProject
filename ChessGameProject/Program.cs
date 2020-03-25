@@ -9,14 +9,24 @@ namespace ChessGameProject
     {
         static void Main(string[] args)
         {
+            try
+            {
+                Board board = new Board(8, 8);
 
-            Board board = new Board(8,8);
+                board.PutPiece(new Tower(board, Color.Black), new Position(0, 0));
+                board.PutPiece(new Tower(board, Color.Black), new Position(1, 3));
+                board.PutPiece(new King(board, Color.Black), new Position(0, 9));
 
-            board.PutPiece(new Tower(board, Color.Preta), new Position(0, 0));
-            board.PutPiece(new Tower(board, Color.Preta), new Position(1, 3));
-            board.PutPiece(new King(board, Color.Preta), new Position(2, 4));
+                Screen.PrintBoard(board);
+            }
+            catch (BoardException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Screen.PrintBoard(board);
+            //ChessPosition chessPosition = new ChessPosition('b', 5);
+            //Console.WriteLine(chessPosition);
+            //Console.WriteLine(chessPosition.ToPosition());
         }
     }
 }
