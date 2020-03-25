@@ -19,10 +19,7 @@ namespace ChessGameProject
                     try
                     {
                         Console.Clear();
-                        Screen.PrintBoard(match.Board);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn:" + match.Turn);
-                        Console.WriteLine("Waiting move:" + match.ActualPlayer);
+                        Screen.PrintMatch(match);
 
                         Console.Write("Position initial: ");
                         Position origem = Screen.ReadChessPosition().ToPosition();

@@ -8,6 +8,40 @@ namespace ChessGameProject
 {
     class Screen
     {
+        //Print Match
+        public static void PrintMatch (ChessMatch match)
+        {
+            PrintBoard(match.Board);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine("Turno: " + match.Turn);
+            Console.WriteLine("Waiting move: " + match.ActualPlayer);
+        }
+
+
+        public static void PrintCapturedPieces(ChessMatch match)
+        {
+            Console.WriteLine("Captured Pieces: ");
+            Console.Write("White: ");
+            PrintHashSet(match.capturedPiecesByColor(board.Enum.Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintHashSet(match.capturedPiecesByColor(board.Enum.Color.Black));
+            Console.ForegroundColor= aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintHashSet (HashSet<Piece> PiecesSet)
+        {
+            Console.Write("[");
+            foreach (Piece x in PiecesSet)
+                Console.Write(x + " ");
+            Console.Write("]");
+
+        }
+
         //Print Board
         public static void PrintBoard (Board board)
         {

@@ -13,12 +13,18 @@ namespace ChessGameProject.Chess
         public Color ActualPlayer { get; private set; }
         public bool Finished { get; private set; }
 
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> capturedPieces;
+
+
         public ChessMatch()
         {
             Board = new Board(8,8);
             Turn = 1;
             ActualPlayer = Color.White;
             Finished = false;
+            pieces = new HashSet<Piece> ();
+            capturedPieces = new HashSet<Piece>();
             PutAllPiecesForPlay();
         }
 
@@ -29,6 +35,8 @@ namespace ChessGameProject.Chess
             p.IncreaseQuantityMovements();
             Piece capturedPiece = Board.RemovePiece(destiny);
             Board.PutPiece(p, destiny);
+            if (capturedPiece  != null)
+                capturedPieces.Add(capturedPiece);
         }
 
         //Chage turn when the player finished one movement
@@ -42,6 +50,7 @@ namespace ChessGameProject.Chess
         //Verify if initial position is valid
         public void ChoiceInicialPositionIsValid (Position position)
         {
+            Board.ValidateIfPositionWithinLimits(position);
             if (Board.piece(position) == null)
                 throw new BoardException("There isn't piece in the chosen origin position!");
             
@@ -55,7 +64,8 @@ namespace ChessGameProject.Chess
         //Verify if destiny position is valid
         public void ChoiceDestinyPositionIsValid(Position initial, Position destiny)
         {
-            if(!Board.piece(initial).ThisPieceCanMoveForThisPosition(destiny))
+                Board.ValidateIfPositionWithinLimits(destiny);
+                if (!Board.piece(initial).ThisPieceCanMoveForThisPosition(destiny))
                 throw new BoardException("Destiny position invalid!");
         }
 
@@ -68,22 +78,54 @@ namespace ChessGameProject.Chess
                 ActualPlayer = Color.White;
         }
 
+        //Captured Pieces by a certain color
+        public HashSet<Piece> capturedPiecesByColor (Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece> ();
+            foreach (Piece x in capturedPieces)
+            {
+                if (x.Color == color)
+                    aux.Add(x);
+            }
+            return aux;
+        }
+
+        // Pieces on game by a certain color
+        public HashSet<Piece> PiecesOnGame(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in pieces)
+            {
+                if (x.Color == color)
+                    aux.Add(x);
+            }
+            aux.ExceptWith(capturedPiecesByColor(color));
+            return aux;
+        }
+
+        //Put new Piece in the game
+        public void PutNewPiece (char column, int row, Piece piece)
+        {
+            Board.PutPiece(piece, new ChessPosition(column, row).ToPosition());
+            pieces.Add(piece);
+        }
+
         //Put all Pieces of the game
         private void PutAllPiecesForPlay()
         {
-            Board.PutPiece(new Tower(Board, Color.White), new ChessPosition('c', 1).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new ChessPosition('c', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new ChessPosition('d', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new ChessPosition('e', 2).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.White), new ChessPosition('e', 1).ToPosition());
-            Board.PutPiece(new King(Board, Color.White), new ChessPosition('d', 1).ToPosition());
+            PutNewPiece('c', 1, new Tower(Board, Color.White));
+            PutNewPiece('c', 2, new Tower(Board, Color.White));
+            PutNewPiece('d', 2, new Tower(Board, Color.White));
+            PutNewPiece('e', 2, new Tower(Board, Color.White));
+            PutNewPiece('e', 1, new Tower(Board, Color.White));
+            PutNewPiece('d', 1, new King(Board, Color.White));
 
-            Board.PutPiece(new Tower(Board, Color.Black), new ChessPosition('c', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new ChessPosition('c', 8).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new ChessPosition('d', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new ChessPosition('e', 7).ToPosition());
-            Board.PutPiece(new Tower(Board, Color.Black), new ChessPosition('e', 8).ToPosition());
-            Board.PutPiece(new King(Board, Color.Black), new ChessPosition('d', 8).ToPosition());
+            PutNewPiece('c', 7, new Tower(Board, Color.Black));
+            PutNewPiece('c', 8, new Tower(Board, Color.Black));
+            PutNewPiece('d', 7, new Tower(Board, Color.Black));
+            PutNewPiece('e', 7, new Tower(Board, Color.Black));
+            PutNewPiece('e', 8, new Tower(Board, Color.Black));
+            PutNewPiece('d', 8, new King(Board, Color.Black));
         }
     }
 }
