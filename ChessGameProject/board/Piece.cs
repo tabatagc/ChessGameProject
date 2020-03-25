@@ -6,7 +6,7 @@ using ChessGameProject.board;
 
 namespace ChessGameProject.board
 {
-    class Piece
+    abstract class Piece
     {
         public Position Position { get; set; }
         public Color Color { get; protected set; }
@@ -30,5 +30,8 @@ namespace ChessGameProject.board
         {
             MoveCount++;
         }
+
+        //Possible movements -> this method is abstract because depend of piece type
+        public abstract bool[,] PossibleMovements();
     }
 }

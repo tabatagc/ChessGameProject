@@ -19,6 +19,13 @@ namespace ChessGameProject.board
             Column = column;
         }
 
+        // Define the values of position
+        public void SetPositionValues (int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public override string ToString()
         {
             return Row + ", " + Column;
