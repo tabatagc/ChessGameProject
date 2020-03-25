@@ -52,6 +52,19 @@ namespace ChessGameProject.board
             piece.Position = position;
         }
 
+        //Remove one piece in x position 
+        public Piece RemovePiece(Position position)
+        {
+            if (piece(position) == null)
+            {
+                return null;
+            }
+            Piece aux = piece(position);
+            aux.Position = null;
+            pieces[position.Row, position.Column] = null;
+            return aux;
+        }
+
         //Position Verification-> if is valid or not 
         public bool ValidPosition(Position position)
         {

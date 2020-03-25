@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ChessGameProject.board;
+using ChessGameProject.Chess;
 
 namespace ChessGameProject
 {
@@ -25,6 +26,15 @@ namespace ChessGameProject
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
+        }
+
+        // read Position input 
+        public static ChessPosition ReadChessPosition()
+        {
+            string s = Console.ReadLine();
+            char column = s[0];
+            int row = int.Parse(s[1] + "");
+            return new ChessPosition(column, row);
         }
 
         public static void PrintPiece (Piece piece)

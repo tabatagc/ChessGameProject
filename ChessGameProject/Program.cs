@@ -11,23 +11,29 @@ namespace ChessGameProject
         {
             try
             {
-                Board board = new Board(8, 8);
 
-                board.PutPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.PutPiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.PutPiece(new King(board, Color.Black), new Position(5, 7));
-                board.PutPiece(new King(board, Color.White), new Position(4, 1));
+                ChessMatch match = new ChessMatch();
 
-                Screen.PrintBoard(board);
+                while (! match.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
+                    Console.WriteLine();
+
+                    Console.Write("Position initial: ");
+                    Position origem = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.ReadChessPosition().ToPosition();
+
+                    match.MovePiece(origem, destiny);
+                }
+
             }
             catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            //ChessPosition chessPosition = new ChessPosition('b', 5);
-            //Console.WriteLine(chessPosition);
-            //Console.WriteLine(chessPosition.ToPosition());
         }
     }
 }

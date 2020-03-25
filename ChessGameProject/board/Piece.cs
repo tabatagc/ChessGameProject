@@ -23,7 +23,12 @@ namespace ChessGameProject.board
             Board = board;
             Color = color;
             MoveCount = 0;
+        }
 
+        //Increase quantity the movements
+        public void IncreaseQuantityMovements ()
+        {
+            MoveCount++;
         }
     }
 }
