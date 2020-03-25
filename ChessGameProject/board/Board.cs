@@ -37,7 +37,7 @@ namespace ChessGameProject.board
         //If there is a piece in x posisiton -> but first, verify if position is valid
         public bool ExistsPiece(Position position)
         {
-            ValidPosition(position);
+            ValidateIfPositionWithinLimits(position);
             return piece(position) != null;
         }
 
@@ -62,12 +62,12 @@ namespace ChessGameProject.board
             return true;
         }
 
-        //Exception for invalid position
-        public void ValidatePosition(Position position)
+        //Exception for invalid position -> verify if position is within the limits
+        public void ValidateIfPositionWithinLimits(Position position)
         {
             if (!ValidPosition(position))
             {
-                throw new BoardException("Invalid position");
+                throw new BoardException("Invalid position!");
             }
         }
     }

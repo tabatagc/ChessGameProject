@@ -15,7 +15,8 @@ namespace ChessGameProject
 
                 board.PutPiece(new Tower(board, Color.Black), new Position(0, 0));
                 board.PutPiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.PutPiece(new King(board, Color.Black), new Position(0, 9));
+                board.PutPiece(new King(board, Color.Black), new Position(5, 7));
+                board.PutPiece(new King(board, Color.White), new Position(4, 1));
 
                 Screen.PrintBoard(board);
             }
