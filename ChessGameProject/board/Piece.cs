@@ -31,6 +31,27 @@ namespace ChessGameProject.board
             MoveCount++;
         }
 
+        // verify if there is possible movements
+        public bool ThereIsPossibleMovements()
+        {
+            bool[,] mat = PossibleMovements();
+            for (int i=0; i< Board.Rows; i++)
+            {
+                for (int j = 0; j < Board.Columns; j++)
+                {
+                    if (mat[i, j] == true)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        // Verify if position is valid for move this piece
+        public bool ThisPieceCanMoveForThisPosition (Position position)
+        {
+            return PossibleMovements()[position.Row, position.Column];
+        }
+
         //Possible movements -> this method is abstract because depend of piece type
         public abstract bool[,] PossibleMovements();
     }

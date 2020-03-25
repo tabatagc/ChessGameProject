@@ -9,8 +9,8 @@ namespace ChessGameProject.Chess
     class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Turn;
-        private Color ActualPlayer;
+        public int Turn { get; private set; }
+        public Color ActualPlayer { get; private set; }
         public bool Finished { get; private set; }
 
         public ChessMatch()
@@ -29,6 +29,43 @@ namespace ChessGameProject.Chess
             p.IncreaseQuantityMovements();
             Piece capturedPiece = Board.RemovePiece(destiny);
             Board.PutPiece(p, destiny);
+        }
+
+        //Chage turn when the player finished one movement
+        public void PlayWithChangeTurn(Position initial, Position destiny)
+        {
+            MovePiece(initial, destiny);
+            Turn++;
+            ChangePlayer();
+        }
+        
+        //Verify if initial position is valid
+        public void ChoiceInicialPositionIsValid (Position position)
+        {
+            if (Board.piece(position) == null)
+                throw new BoardException("There isn't piece in the chosen origin position!");
+            
+            if(ActualPlayer != Board.piece(position).Color)
+                throw new BoardException("A piece of chosen origin isn't yours!");
+
+            if(!Board.piece(position).ThereIsPossibleMovements())
+                throw new BoardException("There aren't possible moves for the chosen piece!");
+        }
+
+        //Verify if destiny position is valid
+        public void ChoiceDestinyPositionIsValid(Position initial, Position destiny)
+        {
+            if(!Board.piece(initial).ThisPieceCanMoveForThisPosition(destiny))
+                throw new BoardException("Destiny position invalid!");
+        }
+
+            //Change player for play
+            private void ChangePlayer()
+        {
+            if (ActualPlayer == Color.White)
+                ActualPlayer = Color.Black;
+            else
+                ActualPlayer = Color.White;
         }
 
         //Put all Pieces of the game
