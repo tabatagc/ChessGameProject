@@ -39,6 +39,27 @@ namespace ChessGameProject.Chess
             Board.PutPiece(p, destiny);
             if (capturedPiece  != null)
                 capturedPieces.Add(capturedPiece);
+
+            // #Special Move -> Rock Move small
+            if(p is King && destiny.Column== initial.Column +2)
+            {
+                Position initialTower = new Position(initial.Row, initial.Column + 3);
+                Position destinyTower = new Position(initial.Row, initial.Column + 1);
+                Piece T = Board.RemovePiece(initialTower);
+                T.IncreaseQuantityMovements();
+                Board.PutPiece(T, destinyTower);
+            }
+
+            // #Special Move -> Rock Move big
+            if (p is King && destiny.Column == initial.Column - 2)
+            {
+                Position initialTower = new Position(initial.Row, initial.Column - 4);
+                Position destinyTower = new Position(initial.Row, initial.Column - 1);
+                Piece T = Board.RemovePiece(initialTower);
+                T.IncreaseQuantityMovements();
+                Board.PutPiece(T, destinyTower);
+            }
+
             return capturedPiece;
         }
 
@@ -53,6 +74,27 @@ namespace ChessGameProject.Chess
                 capturedPieces.Remove(capturedPiece);
             }
             Board.PutPiece(p,origin);
+
+            // #Special Move -> Rock Move small
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position initialTower = new Position(origin.Row, origin.Column + 3);
+                Position destinyTower = new Position(origin.Row, origin.Column + 1);
+                Piece T = Board.RemovePiece(destinyTower);
+                T.DecreaseQuantityMovements();
+                Board.PutPiece(T, initialTower);
+            }
+
+            // #Special Move -> Rock Move big
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position initialTower = new Position(origin.Row, origin.Column - 4);
+                Position destinyTower = new Position(origin.Row, origin.Column - 1);
+                Piece T = Board.RemovePiece(destinyTower);
+                T.DecreaseQuantityMovements();
+                Board.PutPiece(T, initialTower);
+            }
+
         }
 
         //Chage turn when the player finished one movement
@@ -218,7 +260,7 @@ namespace ChessGameProject.Chess
             PutNewPiece('b', 1, new Horse(Board, Color.White));
             PutNewPiece('c', 1, new Bishop(Board, Color.White));
             PutNewPiece('d', 1, new Queen(Board, Color.White));
-            PutNewPiece('e', 1, new King(Board, Color.White));
+            PutNewPiece('e', 1, new King(Board, Color.White, this));
             PutNewPiece('f', 1, new Bishop(Board, Color.White));
             PutNewPiece('g', 1, new Horse(Board, Color.White));
             PutNewPiece('h', 1, new Tower(Board, Color.White));
@@ -235,7 +277,7 @@ namespace ChessGameProject.Chess
             PutNewPiece('b', 8, new Horse(Board, Color.Black));
             PutNewPiece('c', 8, new Bishop(Board, Color.Black));
             PutNewPiece('d', 8, new Queen(Board, Color.Black));
-            PutNewPiece('e', 8, new King(Board, Color.Black));
+            PutNewPiece('e', 8, new King(Board, Color.Black, this));
             PutNewPiece('f', 8, new Bishop(Board, Color.Black));
             PutNewPiece('g', 8, new Horse(Board, Color.Black));
             PutNewPiece('h', 8, new Tower(Board, Color.Black));

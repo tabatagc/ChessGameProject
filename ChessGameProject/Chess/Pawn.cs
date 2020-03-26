@@ -20,7 +20,7 @@ namespace ChessGameProject.Chess
         private bool IsThereEnemy (Position position)
         {
             Piece p = Board.piece(position);
-            return p != null || p.Color != Color;
+            return p != null && p.Color != Color;
         }
         private bool IsFree(Position position)
         {
