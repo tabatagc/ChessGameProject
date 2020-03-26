@@ -71,8 +71,14 @@ namespace ChessGameProject.Chess
             else
                 Check = false;
 
-            Turn++;
-            ChangePlayer();
+            if (CheckMateTest(AdversaryColor(ActualPlayer)))
+                Finished = true;
+            else
+            {
+
+                Turn++;
+                ChangePlayer();
+            }
         }
         
         //Verify if initial position is valid
@@ -167,6 +173,37 @@ namespace ChessGameProject.Chess
             return false;
         }
 
+
+        //Verify if exsits checkMate
+        public bool CheckMateTest (Color color)
+        {
+            if (!IsInCheck(color))
+                return false;
+
+            foreach(Piece x in PiecesOnGame(color))
+            {
+                bool[,] mat = x.PossibleMovements();
+                for (int i=0; i< Board.Rows; i++)
+                {
+                    for (int j = 0; i < Board.Columns; i++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.Position;
+                            Position destiny = new Position(i, j);
+                            Piece capturedPiece = MovePiece(origin, destiny);
+                            bool CheckTest = IsInCheck(color);
+                            UndoMovement(origin, destiny, capturedPiece);
+                            if (!CheckTest)
+                                return false;
+                        }
+
+                    }
+                }
+            }
+            return true;
+        }
+
         //Put new Piece in the game
         public void PutNewPiece (char column, int row, Piece piece)
         {
@@ -177,19 +214,28 @@ namespace ChessGameProject.Chess
         //Put all Pieces of the game
         private void PutAllPiecesForPlay()
         {
+            //PutNewPiece('c', 1, new Tower(Board, Color.White));
+            //PutNewPiece('c', 2, new Tower(Board, Color.White));
+            //PutNewPiece('d', 2, new Tower(Board, Color.White));
+            //PutNewPiece('e', 2, new Tower(Board, Color.White));
+            //PutNewPiece('e', 1, new Tower(Board, Color.White));
+            //PutNewPiece('d', 1, new King(Board, Color.White));
+
+            //PutNewPiece('c', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('c', 8, new Tower(Board, Color.Black));
+            //PutNewPiece('d', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('e', 7, new Tower(Board, Color.Black));
+            //PutNewPiece('e', 8, new Tower(Board, Color.Black));
+            //PutNewPiece('d', 8, new King(Board, Color.Black));
+
             PutNewPiece('c', 1, new Tower(Board, Color.White));
-            PutNewPiece('c', 2, new Tower(Board, Color.White));
-            PutNewPiece('d', 2, new Tower(Board, Color.White));
-            PutNewPiece('e', 2, new Tower(Board, Color.White));
-            PutNewPiece('e', 1, new Tower(Board, Color.White));
+            PutNewPiece('h', 7, new Tower(Board, Color.White));
             PutNewPiece('d', 1, new King(Board, Color.White));
 
-            PutNewPiece('c', 7, new Tower(Board, Color.Black));
-            PutNewPiece('c', 8, new Tower(Board, Color.Black));
-            PutNewPiece('d', 7, new Tower(Board, Color.Black));
-            PutNewPiece('e', 7, new Tower(Board, Color.Black));
-            PutNewPiece('e', 8, new Tower(Board, Color.Black));
-            PutNewPiece('d', 8, new King(Board, Color.Black));
+            PutNewPiece('b', 8, new Tower(Board, Color.Black));
+            PutNewPiece('a', 8, new King(Board, Color.Black));
+
+
         }
     }
 }
