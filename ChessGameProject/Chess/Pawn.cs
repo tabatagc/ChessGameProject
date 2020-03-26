@@ -8,8 +8,10 @@ namespace ChessGameProject.Chess
 {
     class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color)
+        private ChessMatch Match;
+        public Pawn(Board board, Color color, ChessMatch match) : base(board, color)
         {
+            Match=match;
         }
 
         public override string ToString()
@@ -50,6 +52,18 @@ namespace ChessGameProject.Chess
                 pos.SetPositionValues(Position.Row - 1, Position.Column + 1);
                 if (Board.ValidPosition(pos) && IsThereEnemy(pos))
                     mat[pos.Row, pos.Column] = true;
+
+                // #Special Move En Passant
+                if (Position.Row==3)
+                {
+                    Position left = new Position(Position.Row, Position.Column - 1);
+                        if (Board.ValidPosition(left) && IsThereEnemy(left) && Board.piece(left)== Match.vulnerablePieceEnPassant)
+                            mat[left.Row-1, left.Column] = true;
+
+                    Position right = new Position(Position.Row, Position.Column + 1);
+                    if (Board.ValidPosition(right) && IsThereEnemy(right) && Board.piece(right) == Match.vulnerablePieceEnPassant)
+                        mat[right.Row-1, right.Column] = true;
+                }
             }
 
             else
@@ -69,6 +83,18 @@ namespace ChessGameProject.Chess
                 pos.SetPositionValues(Position.Row + 1, Position.Column + 1);
                 if (Board.ValidPosition(pos) && IsThereEnemy(pos))
                     mat[pos.Row, pos.Column] = true;
+
+                // #Special Move En Passant
+                if (Position.Row == 4)
+                {
+                    Position left = new Position(Position.Row, Position.Column - 1);
+                    if (Board.ValidPosition(left) && IsThereEnemy(left) && Board.piece(left) == Match.vulnerablePieceEnPassant)
+                        mat[left.Row+1, left.Column] = true;
+
+                    Position right = new Position(Position.Row, Position.Column + 1);
+                    if (Board.ValidPosition(right) && IsThereEnemy(right) && Board.piece(right) == Match.vulnerablePieceEnPassant)
+                        mat[right.Row+1, right.Column] = true;
+                }
             }
 
             return mat;
