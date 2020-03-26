@@ -16,6 +16,8 @@ namespace ChessGameProject
             PrintCapturedPieces(match);
             Console.WriteLine("Turno: " + match.Turn);
             Console.WriteLine("Waiting move: " + match.ActualPlayer);
+            if (match.Check)
+                Console.WriteLine("Check!");
         }
 
 

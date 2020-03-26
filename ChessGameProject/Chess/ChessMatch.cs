@@ -15,6 +15,7 @@ namespace ChessGameProject.Chess
 
         private HashSet<Piece> pieces;
         private HashSet<Piece> capturedPieces;
+        public bool Check { get; private set; }
 
 
         public ChessMatch()
@@ -23,13 +24,14 @@ namespace ChessGameProject.Chess
             Turn = 1;
             ActualPlayer = Color.White;
             Finished = false;
+            Check = false;
             pieces = new HashSet<Piece> ();
             capturedPieces = new HashSet<Piece>();
             PutAllPiecesForPlay();
         }
 
         //Move piece the initial position for destiny position
-        public void MovePiece (Position initial, Position destiny)
+        public Piece MovePiece (Position initial, Position destiny)
         {
             Piece p = Board.RemovePiece(initial);
             p.IncreaseQuantityMovements();
@@ -37,12 +39,38 @@ namespace ChessGameProject.Chess
             Board.PutPiece(p, destiny);
             if (capturedPiece  != null)
                 capturedPieces.Add(capturedPiece);
+            return capturedPiece;
+        }
+
+
+        public void UndoMovement (Position origin, Position destiny, Piece capturedPiece)
+        {
+            Piece p = Board.RemovePiece(destiny);
+            p.DecreaseQuantityMovements();
+            if(capturedPiece != null)
+            {
+                Board.PutPiece(capturedPiece, destiny);
+                capturedPieces.Remove(capturedPiece);
+            }
+            Board.PutPiece(p,origin);
         }
 
         //Chage turn when the player finished one movement
         public void PlayWithChangeTurn(Position initial, Position destiny)
         {
-            MovePiece(initial, destiny);
+            Piece capturedPiece = MovePiece(initial, destiny);
+
+            if (IsInCheck(ActualPlayer))
+            {
+                UndoMovement(initial, destiny, capturedPiece);
+                throw new BoardException("Can't be checked");
+            }
+
+            if (IsInCheck(AdversaryColor(ActualPlayer)))
+                Check = true;
+            else
+                Check = false;
+
             Turn++;
             ChangePlayer();
         }
@@ -101,6 +129,42 @@ namespace ChessGameProject.Chess
             }
             aux.ExceptWith(capturedPiecesByColor(color));
             return aux;
+        }
+
+        //Know which color is opposing
+        private Color AdversaryColor (Color color)
+        {
+            if (color == Color.White)
+                return Color.Black;
+            else
+                return Color.White;
+        }
+
+
+        //returns the king piece of the color we want
+        private Piece King (Color color)
+        {
+            foreach(Piece x in PiecesOnGame(color))
+            {
+                if (x is King)
+                    return x;
+            }
+            return null;
+        }
+
+        //Verify if King is in check
+        public bool IsInCheck (Color color)
+        {
+            Piece K = King(color);
+            if (K == null)
+                throw new BoardException("There is no " + color +  " king on the board.");
+            foreach(Piece x in PiecesOnGame(AdversaryColor(color)))
+            {
+                bool[,] mat = x.PossibleMovements();
+                if (mat[K.Position.Row, K.Position.Column])
+                    return true;
+            }
+            return false;
         }
 
         //Put new Piece in the game

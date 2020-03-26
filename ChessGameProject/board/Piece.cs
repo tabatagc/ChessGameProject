@@ -31,6 +31,12 @@ namespace ChessGameProject.board
             MoveCount++;
         }
 
+        //Decrease quantity the movements
+        public void DecreaseQuantityMovements()
+        {
+            MoveCount--;
+        }
+
         // verify if there is possible movements
         public bool ThereIsPossibleMovements()
         {
