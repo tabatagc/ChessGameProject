@@ -176,7 +176,7 @@ namespace ChessGameProject.Chess
             }
 
             // #Special Move En Passant
-            if (p is Pawn && (destiny.Row == destiny.Row - 2 || destiny.Row == destiny.Row + 2))
+            if (p is Pawn && (destiny.Row == initial.Row - 2 || destiny.Row == initial.Row + 2))
                 vulnerablePieceEnPassant = p;
             else
                 vulnerablePieceEnPassant = null;
