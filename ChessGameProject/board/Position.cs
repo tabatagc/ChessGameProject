@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace ChessGameProject.board
 {
-    class Position
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    
+    public class Position
     {
         public int Row { get; set; }
         public int Column { get; set; }
@@ -19,8 +19,7 @@ namespace ChessGameProject.board
             Column = column;
         }
 
-        // Define the values of position
-        public void SetPositionValues (int row, int column)
+        public void SetPositionValues(int row, int column)
         {
             Row = row;
             Column = column;
