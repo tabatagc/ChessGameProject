@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ChessGameProject.board;
-using ChessGameProject.board.Enum;
-
 namespace ChessGameProject.Chess
 {
+     using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using ChessGameProject.board;
+    using ChessGameProject.board.Enum;
+    
     class Bishop : Piece
     {
         public Bishop (Board board, Color color) :base (board, color)
