@@ -1,10 +1,10 @@
-﻿using System;
-using ChessGameProject.board;
-using ChessGameProject.board.Enum;
-using ChessGameProject.Chess;
-
 namespace ChessGameProject
 {
+    ﻿using System;
+    using ChessGameProject.board;
+    using ChessGameProject.board.Enum;
+    using ChessGameProject.Chess;
+    
     class Program
     {
         static void Main(string[] args)
