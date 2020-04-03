@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ChessGameProject.board;
-using ChessGameProject.Chess;
-
 namespace ChessGameProject
 {
-    class Screen
+    ﻿using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using ChessGameProject.board;
+    using ChessGameProject.Chess;
+    
+    public class Screen
     {
         //Print Match
         public static void PrintMatch (ChessMatch match)
@@ -34,13 +34,17 @@ namespace ChessGameProject
         public static void PrintCapturedPieces(ChessMatch match)
         {
             Console.WriteLine("Captured Pieces: ");
+            
             Console.Write("White: ");
             PrintHashSet(match.capturedPiecesByColor(board.Enum.Color.White));
             Console.WriteLine();
+            
             Console.Write("Black: ");
             ConsoleColor aux = Console.ForegroundColor;
+            
             Console.ForegroundColor = ConsoleColor.Yellow;
             PrintHashSet(match.capturedPiecesByColor(board.Enum.Color.Black));
+            
             Console.ForegroundColor= aux;
             Console.WriteLine();
         }
@@ -91,7 +95,7 @@ namespace ChessGameProject
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  a b c d e f g h");
+            Console.WriteLine(" a b c d e f g h");
             Console.BackgroundColor = OriginalBackground;
 
         }
